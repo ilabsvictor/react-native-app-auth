@@ -251,9 +251,21 @@ public class RNAppAuthModule extends ReactContextBaseJavaModule implements Activ
         this.additionalParametersMap = additionalParametersMap;
         this.clientSecret = clientSecret;
         this.clientAuthMethod = clientAuthMethod;
-        this.skipCodeExchange = skipCodeExchange;
-        this.useNonce = useNonce;
-        this.usePKCE = usePKCE;
+        if (skipCodeExchange == null) {
+            this.skipCodeExchange = Boolean.FALSE;
+        } else {
+            this.skipCodeExchange = skipCodeExchange;
+        }
+        if (useNonce == null) {
+            this.useNonce = Boolean.FALSE;
+        } else {
+            this.useNonce = useNonce;
+        }
+        if (usePKCE == null) {
+            this.usePKCE = Boolean.FALSE;
+        } else {
+            this.usePKCE = usePKCE;
+        }
 
         // when serviceConfiguration is provided, we don't need to hit up the OpenID well-known id endpoint
         if (serviceConfiguration != null || hasServiceConfiguration(issuer)) {
@@ -496,7 +508,7 @@ public class RNAppAuthModule extends ReactContextBaseJavaModule implements Activ
                 return;
             }
 
-            if (this.skipCodeExchange) {
+            if (this.skipCodeExchange == Boolean.TRUE) {
                 WritableMap map;
                 if (this.usePKCE && this.codeVerifier != null) {
                     map = TokenResponseFactory.authorizationCodeResponseToMap(response, this.codeVerifier);
